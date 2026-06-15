@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hawaii Family Trip — 7 Days</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ocean: #1a6b8a;
+    --lava: #c0392b;
+    --sand: #f5efe6;
+    --palm: #2d6a4f;
+    --gold: #e8a838;
+    --ash: #4a4a4a;
+    --smoke: #f0ebe3;
+    --white: #ffffff;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--sand);
+    color: var(--ash);
+    line-height: 1.6;
+  }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(160deg, #0d3d52 0%, #1a6b8a 50%, #c0392b 100%);
+    color: white;
+    padding: 60px 24px 50px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.3;
+  }
+  .hero-eyebrow {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.75);
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+  }
+  .tag {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    color: white;
+  }
+
+  /* BUDGET STRIP */
+  .budget-strip {
+    background: var(--white);
+    border-bottom: 3px solid var(--gold);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    text-align: center;
+  }
+  .budget-col {
+    padding: 18px 12px;
+    border-right: 1px solid #e8e0d5;
+  }
+  .budget-col:last-child { border-right: none; }
+  .budget-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 4px;
+  }
+  .budget-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--ocean);
+  }
+  .budget-note {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+
+  /* ISLAND TABS */
+  .island-nav {
+    display: flex;
+    background: #e8e0d5;
+    border-bottom: 2px solid #d4c9bb;
+    overflow-x: auto;
+  }
+  .island-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #888;
+    transition: all 0.2s;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+  }
+  .island-tab.active {
+    background: var(--sand);
+    color: var(--ocean);
+    border-bottom-color: var(--ocean);
+  }
+
+  /* DAYS */
+  .content { max-width: 800px; margin: 0 auto; padding: 0 0 60px; }
+
+  .island-section { display: none; }
+  .island-section.active { display: block; }
+
+  .island-header {
+    padding: 32px 24px 20px;
+    border-bottom: 1px solid #ddd5c8;
+  }
+  .island-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: var(--ash);
+    margin-bottom: 6px;
+  }
+  .island-header p {
+    font-size: 13px;
+    color: #888;
+  }
+
+  .day-card {
+    margin: 0 16px 4px;
+    border-radius: 0;
+    border-bottom: 1px solid #e0d8ce;
+    overflow: hidden;
+  }
+  .day-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 16px;
+    cursor: pointer;
+    background: var(--white);
+    transition: background 0.15s;
+  }
+  .day-header:hover { background: #faf7f3; }
+  .day-number {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .day-title-block { flex: 1; }
+  .day-title {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ash);
+  }
+  .day-subtitle {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 2px;
+  }
+  .day-chevron {
+    color: #bbb;
+    font-size: 18px;
+    transition: transform 0.2s;
+  }
+  .day-card.open .day-chevron { transform: rotate(90deg); }
+
+  .day-body {
+    display: none;
+    background: var(--smoke);
+    padding: 0 16px 20px;
+  }
+  .day-card.open .day-body { display: block; }
+
+  .activity {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid #e8e0d5;
+  }
+  .activity:last-child { border-bottom: none; }
+  .activity-time {
+    font-size: 11px;
+    font-weight: 600;
+    color: #aaa;
+    min-width: 52px;
+    padding-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .activity-icon {
+    font-size: 18px;
+    min-width: 24px;
+    text-align: center;
+    padding-top: 1px;
+  }
+  .activity-body { flex: 1; }
+  .activity-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ash);
+  }
+  .activity-desc {
+    font-size: 12px;
+    color: #888;
+    margin-top: 3px;
+    line-height: 1.5;
+  }
+  .activity-link {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ocean);
+    text-decoration: none;
+    letter-spacing: 0.3px;
+  }
+  .activity-link:hover { text-decoration: underline; }
+
+  .tip-box {
+    margin: 16px 0 4px;
+    background: #fff8ec;
+    border-left: 3px solid var(--gold);
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: #7a6030;
+    line-height: 1.5;
+  }
+  .tip-box strong { color: #5a4010; }
+
+  /* HOTELS SECTION */
+  .hotels-section {
+    background: var(--white);
+    margin: 0 16px 16px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0d8ce;
+  }
+  .hotels-header {
+    background: var(--ocean);
+    color: white;
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .hotel-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    border-bottom: 1px solid #f0ebe3;
+  }
+  .hotel-row:last-child { border-bottom: none; }
+  .hotel-tier {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    min-width: 68px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .tier-budget { background: #e8f5e9; color: #2e7d32; }
+  .tier-mid { background: #e3f2fd; color: #1565c0; }
+  .tier-luxury { background: #fff3e0; color: #e65100; }
+  .hotel-info { flex: 1; }
+  .hotel-name { font-weight: 600; font-size: 14px; }
+  .hotel-price { font-size: 12px; color: #888; margin-top: 2px; }
+  .hotel-review { font-size: 12px; color: #666; margin-top: 4px; font-style: italic; }
+  .hotel-link {
+    display: inline-block;
+    margin-top: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ocean);
+    text-decoration: none;
+  }
+  .hotel-link:hover { text-decoration: underline; }
+
+  /* COST SUMMARY */
+  .cost-summary {
+    margin: 16px 16px 0;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0d8ce;
+  }
+  .cost-header {
+    background: var(--palm);
+    color: white;
+    padding: 14px 18px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .cost-table { width: 100%; border-collapse: collapse; }
+  .cost-table td { padding: 10px 18px; font-size: 13px; border-bottom: 1px solid #f0ebe3; }
+  .cost-table td:last-child { text-align: right; font-weight: 600; color: var(--ocean); }
+  .cost-table tr:last-child td { border-bottom: none; }
+  .cost-total td { background: #f5efe6; font-weight: 700 !important; font-size: 14px !important; }
+  .cost-total td:last-child { color: var(--lava) !important; }
+
+  /* FOOTER */
+  .footer {
+    background: #1a1a1a;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+  }
+
+  @media (max-width: 480px) {
+    .budget-strip { grid-template-columns: 1fr; }
+    .budget-col { border-right: none; border-bottom: 1px solid #e8e0d5; }
+    .budget-col:last-child { border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-eyebrow">Family Trip Itinerary · 7 Days</div>
+  <h1>Aloha, Hawaii 🌺</h1>
+  <p class="hero-sub">History, volcanoes, and native culture — the perfect trip for a family of three.</p>
+  <div class="hero-tags">
+    <span class="tag">⚔️ WW2 History</span>
+    <span class="tag">🌋 Active Volcano</span>
+    <span class="tag">🏝️ Native Culture</span>
+    <span class="tag">3 People · Mid-Range</span>
+    <span class="tag">Oahu (4 days) + Big Island (3 days)</span>
+  </div>
+</div>
+
+<div class="budget-strip">
+  <div class="budget-col">
+    <div class="budget-label">Budget Est.</div>
+    <div class="budget-value">~$4,500</div>
+    <div class="budget-note">3 people total</div>
+  </div>
+  <div class="budget-col">
+    <div class="budget-label">Mid-Range Est.</div>
+    <div class="budget-value">~$7,000</div>
+    <div class="budget-note">3 people total</div>
+  </div>
+  <div class="budget-col">
+    <div class="budget-label">Luxury Est.</div>
+    <div class="budget-value">~$14,000+</div>
+    <div class="budget-note">3 people total</div>
+  </div>
+</div>
+
+<div class="island-nav">
+  <button class="island-tab active" onclick="showIsland('oahu')">🏙️ Oahu (Days 1–4)</button>
+  <button class="island-tab" onclick="showIsland('bigisland')">🌋 Big Island (Days 5–7)</button>
+  <button class="island-tab" onclick="showIsland('hotels')">🏨 Hotels</button>
+  <button class="island-tab" onclick="showIsland('costs')">💰 Costs</button>
+</div>
+
+<div class="content">
+
+  <!-- OAHU -->
+  <div class="island-section active" id="oahu">
+    <div class="island-header">
+      <h2>Oahu — History & Culture</h2>
+      <p>Fly into Honolulu (HNL). Home base for 4 days. WW2 sites, native Hawaiian history, and iconic views.</p>
+    </div>
+
+    <!-- Day 1 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--ocean)">1</div>
+        <div class="day-title-block">
+          <div class="day-title">Arrive & Settle In</div>
+          <div class="day-subtitle">Waikiki · Easy first day</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">Arrive</div>
+          <div class="activity-icon">✈️</div>
+          <div class="activity-body">
+            <div class="activity-name">Land at Honolulu (HNL)</div>
+            <div class="activity-desc">Check in to your Waikiki hotel. Take the afternoon easy — walk the beach, grab food nearby, beat the jet lag.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Evening</div>
+          <div class="activity-icon">🍽️</div>
+          <div class="activity-body">
+            <div class="activity-name">Dinner — Helena's Hawaiian Food</div>
+            <div class="activity-desc">James Beard Award–winning spot serving authentic Hawaiian plate lunch since 1946. Kalua pig, laulau, poi. Cash only.</div>
+            <a class="activity-link" href="https://www.helenashawaiianfood.com" target="_blank">→ helenashawaiianfood.com</a>
+          </div>
+        </div>
+        <div class="tip-box"><strong>Pro tip:</strong> Book Pearl Harbor tickets tonight if you haven't — morning slots sell out fast. <a href="https://www.pearlharborhistoricsites.org" target="_blank" style="color:inherit;font-weight:700">pearlharborhistoricsites.org</a></div>
+      </div>
+    </div>
+
+    <!-- Day 2 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--lava)">2</div>
+        <div class="day-title-block">
+          <div class="day-title">Pearl Harbor Day</div>
+          <div class="day-subtitle">WW2 History · Full day</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">7:30 AM</div>
+          <div class="activity-icon">🚢</div>
+          <div class="activity-body">
+            <div class="activity-name">Pearl Harbor Historic Sites</div>
+            <div class="activity-desc">Arrive early. USS Arizona Memorial is the emotional core — the ship still sits beneath the harbor with 1,177 sailors aboard. Then walk to the Battleship Missouri (where Japan surrendered in 1945) and the Pacific Aviation Museum. Plan 4–5 hours total.</div>
+            <a class="activity-link" href="https://www.pearlharborhistoricsites.org" target="_blank">→ Book tickets in advance</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">1:00 PM</div>
+          <div class="activity-icon">🪖</div>
+          <div class="activity-body">
+            <div class="activity-name">U.S. Army Museum of Hawaii</div>
+            <div class="activity-desc">FREE museum in Waikiki at Fort DeRussy. Huge WW2 collection — firearms, an AH-1 Cobra helicopter, the Gallery of Heroes honoring Medal of Honor recipients, and original coastal artillery batteries.</div>
+            <a class="activity-link" href="https://www.hiarmymuseumsoc.org" target="_blank">→ hiarmymuseumsoc.org · FREE</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">3:30 PM</div>
+          <div class="activity-icon">⛪</div>
+          <div class="activity-body">
+            <div class="activity-name">Punchbowl National Cemetery</div>
+            <div class="activity-desc">National cemetery inside an extinct volcanic crater. Thousands of WW2 veterans buried here. Deeply moving, completely free, and one of the most beautiful spots on Oahu.</div>
+          </div>
+        </div>
+        <div class="tip-box"><strong>Dad alert:</strong> If he can handle more, the drive past Wheeler Army Airfield still shows bullet holes on the hangars from December 7, 1941. Movies like "Tora! Tora! Tora!" were filmed there.</div>
+      </div>
+    </div>
+
+    <!-- Day 3 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--palm)">3</div>
+        <div class="day-title-block">
+          <div class="day-title">Native Hawaiian History</div>
+          <div class="day-subtitle">Culture & Royal History · Downtown Honolulu</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">8:30 AM</div>
+          <div class="activity-icon">🏛️</div>
+          <div class="activity-body">
+            <div class="activity-name">Iolani Palace</div>
+            <div class="activity-desc">The only royal palace on U.S. soil. Built in 1882, it's where Queen Liliuokalani was overthrown and imprisoned in 1893. Reddit: "Understanding what happened here changes how you see everything else in Hawaii." Audio tours available. Book ahead.</div>
+            <a class="activity-link" href="https://www.iolanipalace.org" target="_blank">→ iolanipalace.org · ~$25/person</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:00 AM</div>
+          <div class="activity-icon">🪆</div>
+          <div class="activity-body">
+            <div class="activity-name">Bishop Museum</div>
+            <div class="activity-desc">The world's largest collection of Hawaiian and Pacific artifacts. Ancient tools, royal regalia, cultural history going back centuries. Planetarium on-site too.</div>
+            <a class="activity-link" href="https://www.bishopmuseum.org" target="_blank">→ bishopmuseum.org · ~$30/person</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">2:30 PM</div>
+          <div class="activity-icon">🌿</div>
+          <div class="activity-body">
+            <div class="activity-name">KCC Farmers Market (Saturday only)</div>
+            <div class="activity-desc">If Day 3 falls on a Saturday — go here first thing in the morning instead. Local fruit, fresh poi, fish, hot plates. Reddit: "As local as Oahu gets for visitors." Free parking.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Evening</div>
+          <div class="activity-icon">🌺</div>
+          <div class="activity-body">
+            <div class="activity-name">Polynesian Cultural Center</div>
+            <div class="activity-desc">About an hour north of Waikiki — seven Pacific cultural villages plus the incredible Hā night show. A full evening of native culture, music, and food. Best to drive or book a tour package that includes transport.</div>
+            <a class="activity-link" href="https://www.polynesia.com" target="_blank">→ polynesia.com · ~$70–$120/person</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Day 4 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--gold)">4</div>
+        <div class="day-title-block">
+          <div class="day-title">Craters, Views & North Shore</div>
+          <div class="day-subtitle">Volcanic Oahu · Scenic Drive Day</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">6:30 AM</div>
+          <div class="activity-icon">⛰️</div>
+          <div class="activity-body">
+            <div class="activity-name">Diamond Head Crater Hike</div>
+            <div class="activity-desc">Oahu's iconic volcanic crater, formed 300,000 years ago. 0.8-mile hike to the summit (560 ft elevation). Panoramic views of Waikiki. Go early — it's crowded by 9 AM. WW2 bunkers visible at the top.</div>
+            <a class="activity-link" href="https://dlnr.hawaii.gov/dsp/parks/oahu/diamond-head-state-monument/" target="_blank">→ Reserve online · ~$5/person</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">9:30 AM</div>
+          <div class="activity-icon">🐢</div>
+          <div class="activity-body">
+            <div class="activity-name">Laniakea "Turtle Beach" — North Shore</div>
+            <div class="activity-desc">Hawaiian green sea turtles haul out here regularly. Volunteers on-site for respectful viewing. Peak turtle hours are 10 AM–1 PM. Keep 10 feet away — touching is illegal. Parking fills fast; arrive early.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">11:30 AM</div>
+          <div class="activity-icon">🛕</div>
+          <div class="activity-body">
+            <div class="activity-name">Pu'u o Mahuka Heiau</div>
+            <div class="activity-desc">Oahu's largest ancient Hawaiian temple (heiau) on the North Shore, overlooking the ocean. Free, open air, deeply significant to native Hawaiian culture. Combine it with the North Shore drive.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">1:00 PM</div>
+          <div class="activity-icon">🍤</div>
+          <div class="activity-body">
+            <div class="activity-name">Lunch — Giovanni's Shrimp Truck</div>
+            <div class="activity-desc">North Shore institution. Garlic shrimp plates that invented Oahu's shrimp truck culture. Eat outside, enjoy the vibe.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Evening</div>
+          <div class="activity-icon">✈️</div>
+          <div class="activity-body">
+            <div class="activity-name">Fly to Big Island (Hilo or Kona)</div>
+            <div class="activity-desc">Short inter-island flight, ~35 min. Hawaiian Airlines or Southwest. Book this in advance — usually $60–$120/person each way. Fly into Hilo (closer to the volcano) if possible.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIG ISLAND -->
+  <div class="island-section" id="bigisland">
+    <div class="island-header">
+      <h2>Big Island — Volcanoes & Nature</h2>
+      <p>Fly in from Oahu (35 min). 3 days of volcanic landscapes, black sand beaches, and stargazing.</p>
+    </div>
+
+    <!-- Day 5 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--lava)">5</div>
+        <div class="day-title-block">
+          <div class="day-title">Kīlauea Volcano</div>
+          <div class="day-subtitle">Hawaiʻi Volcanoes National Park · All Day</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">Morning</div>
+          <div class="activity-icon">🌋</div>
+          <div class="activity-body">
+            <div class="activity-name">Hawaiʻi Volcanoes National Park</div>
+            <div class="activity-desc">Kīlauea is currently in an active eruption cycle as of June 2026 — one of the most historically active periods ever recorded. The eruption zone is closed, but the caldera rim overlooks give spectacular views of lava glow, gas plumes, and fountaining up to 700 feet high during active episodes.</div>
+            <a class="activity-link" href="https://www.nps.gov/havo" target="_blank">→ nps.gov/havo · $35/vehicle</a>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Midday</div>
+          <div class="activity-icon">🕳️</div>
+          <div class="activity-body">
+            <div class="activity-name">Nāhuku Lava Tube (Thurston Lava Tube)</div>
+            <div class="activity-desc">Walk through a massive ancient lava tunnel inside the park — totally free with park entry. Surreal, cool (literally), and genuinely impressive. One of the most unique walks in Hawaii.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Afternoon</div>
+          <div class="activity-icon">🛤️</div>
+          <div class="activity-body">
+            <div class="activity-name">Chain of Craters Road</div>
+            <div class="activity-desc">Drive through layers of hardened lava flows all the way to the ocean. Ancient petroglyphs (Pu'u Loa) along the way — deeply meaningful to native Hawaiian culture and a perfect combo of geology and history.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Dusk</div>
+          <div class="activity-icon">🌅</div>
+          <div class="activity-body">
+            <div class="activity-name">Caldera Rim at Sunset / Night</div>
+            <div class="activity-desc">The lava glow is most dramatic at dusk and after dark. Stay for this — it's genuinely one of the most awe-inspiring things you can see in the US. Bring layers, it's cooler at elevation.</div>
+          </div>
+        </div>
+        <div class="tip-box"><strong>🔔 Sign up for USGS eruption alerts</strong> before your trip so you know if an eruption episode is active: <a href="https://www.usgs.gov/volcanoes/kilauea/volcano-updates" target="_blank" style="color:inherit;font-weight:700">usgs.gov/volcanoes/kilauea</a></div>
+      </div>
+    </div>
+
+    <!-- Day 6 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:#5c3d99)">6</div>
+        <div class="day-title-block">
+          <div class="day-title">Black Sand & Stars</div>
+          <div class="day-subtitle">Punaluʻu Beach · Mauna Kea Summit</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">Morning</div>
+          <div class="activity-icon">🏖️</div>
+          <div class="activity-body">
+            <div class="activity-name">Punaluʻu Black Sand Beach</div>
+            <div class="activity-desc">Volcanic black sand beach with green sea turtles resting on the shore. Completely free, completely unique. One of the most photogenic spots in all of Hawaii. Bring a picnic.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Afternoon</div>
+          <div class="activity-icon">🌊</div>
+          <div class="activity-body">
+            <div class="activity-name">Rainbow Falls · Hilo</div>
+            <div class="activity-desc">A stunning waterfall just outside Hilo town — free, easy walk, spectacular. Named for the rainbows that appear in the mist in the morning. Pairs well with a walk through downtown Hilo.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">3:00 PM</div>
+          <div class="activity-icon">🔭</div>
+          <div class="activity-body">
+            <div class="activity-name">Mauna Kea Summit & Stargazing Tour</div>
+            <div class="activity-desc">The world's tallest mountain from base to peak (13,796 ft). Drive or book a tour up. The sunset from the summit is world-class. After dark it becomes one of the best stargazing spots on Earth — world-class observatories are up here for a reason. Tours include hot chocolate and guides.</div>
+            <a class="activity-link" href="https://www.maunakea.com" target="_blank">→ maunakea.com · ~$200/person for guided tour</a>
+          </div>
+        </div>
+        <div class="tip-box"><strong>Note:</strong> Altitude at Mauna Kea summit is 13,796 ft. Take it slow, drink water, and skip if anyone has heart/respiratory conditions. The visitor center at 9,200 ft is a great option if the summit feels too much.</div>
+      </div>
+    </div>
+
+    <!-- Day 7 -->
+    <div class="day-card" onclick="toggleDay(this)">
+      <div class="day-header">
+        <div class="day-number" style="background:var(--palm)">7</div>
+        <div class="day-title-block">
+          <div class="day-title">Fly Home</div>
+          <div class="day-subtitle">Morning wrap-up · Departure day</div>
+        </div>
+        <div class="day-chevron">›</div>
+      </div>
+      <div class="day-body">
+        <div class="activity">
+          <div class="activity-time">Morning</div>
+          <div class="activity-icon">🛍️</div>
+          <div class="activity-body">
+            <div class="activity-name">Final Morning — Kona Town (Optional)</div>
+            <div class="activity-desc">If flying out of Kona airport, walk the Kona waterfront. Local coffee shops serve Kona coffee (one of the world's best) fresh from nearby farms. Great spot to grab last-minute gifts.</div>
+          </div>
+        </div>
+        <div class="activity">
+          <div class="activity-time">Depart</div>
+          <div class="activity-icon">✈️</div>
+          <div class="activity-body">
+            <div class="activity-name">Fly home from Kona (KOA) or Hilo (ITO)</div>
+            <div class="activity-desc">Most flights connect back through Honolulu or directly to mainland. Book your return from the Big Island to avoid backtracking to Oahu if possible.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HOTELS -->
+  <div class="island-section" id="hotels">
+    <div class="island-header">
+      <h2>Where to Stay</h2>
+      <p>Recommendations for both islands, organized by budget tier. All 3 tiers listed so you can mix and match.</p>
+    </div>
+
+    <div style="padding: 16px 16px 0; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #999;">🏙️ Oahu — Waikiki (4 nights)</div>
+    <div class="hotels-section">
+      <div class="hotels-header">Oahu Hotel Options</div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-budget">BUDGET</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Luana Waikiki Hotel & Suites</div>
+          <div class="hotel-price">~$180–200/night · Has kitchenettes</div>
+          <div class="hotel-review">"Best value in Waikiki — solid location, kitchenette saves on food costs."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g6999277-d208924-Reviews-Luana_Waikiki_Hotel_Suites-Waikiki_Oahu_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-mid">MID-RANGE</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Outrigger Waikiki Beach Resort</div>
+          <div class="hotel-price">~$300–400/night · Beachfront</div>
+          <div class="hotel-review">"Right on the beach, walkable to everything. Perfect Waikiki base camp."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g6999277-d209422-Reviews-OUTRIGGER_Waikiki_Beach_Resort-Waikiki_Oahu_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-mid">MID-RANGE</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Hilton Hawaiian Village</div>
+          <div class="hotel-price">~$300–400/night · Lagoon & pools</div>
+          <div class="hotel-review">"Great for families — lagoon, multiple pools, tons of on-site dining."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g6999277-d208925-Reviews-Hilton_Hawaiian_Village_Waikiki_Beach_Resort-Waikiki_Oahu_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-luxury">LUXURY</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Halekulani Hotel</div>
+          <div class="hotel-price">~$600–900/night · Iconic luxury</div>
+          <div class="hotel-review">"My favorite hotel in the world. The Mai Tai bar, the beach service — beyond reproach."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g6999277-d209419-Reviews-Halekulani_Hotel-Waikiki_Oahu_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding: 16px 16px 0; font-size: 12px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #999;">🌋 Big Island (3 nights)</div>
+    <div class="hotels-section">
+      <div class="hotels-header">Big Island Hotel Options</div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-budget">BUDGET</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Hilo Hawaiian Hotel</div>
+          <div class="hotel-price">~$120–160/night · Hilo Bay views</div>
+          <div class="hotel-review">"Older but charming, unbeatable location right on Hilo Bay. Great value for the Big Island."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g29218-d89877-Reviews-Hilo_Hawaiian_Hotel-Hilo_Island_of_Hawaii_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-mid">MID-RANGE</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Volcano House (Inside the Park)</div>
+          <div class="hotel-price">~$220–350/night · On the crater rim</div>
+          <div class="hotel-review">"Woke up to lava glow from our room. Once in a lifetime experience. Book this one."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g60872-d89990-Reviews-Volcano_House-Hawaii_Volcanoes_National_Park_Island_of_Hawaii_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+      <div class="hotel-row">
+        <div class="hotel-tier tier-luxury">LUXURY</div>
+        <div class="hotel-info">
+          <div class="hotel-name">Mauna Kea Beach Hotel (Newly Renovated)</div>
+          <div class="hotel-price">~$600–900/night · $240M renovation completed 2026</div>
+          <div class="hotel-review">"One of Hawaii's most iconic resorts, just completed its biggest renovation in 60 years."</div>
+          <a class="hotel-link" href="https://www.tripadvisor.com/Hotel_Review-g60872-d89989-Reviews-Mauna_Kea_Beach_Hotel-Hawaii_Volcanoes_National_Park_Island_of_Hawaii_Hawaii.html" target="_blank">→ TripAdvisor Reviews</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip-box" style="margin: 0 16px 16px;">
+      <strong>🌋 Hot tip:</strong> If budget allows, book <strong>Volcano House</strong> for at least 1–2 nights on the Big Island. It sits right on the caldera rim — you can watch lava glow from the hotel porch. Reddit consistently calls it one of the most unique hotel experiences in the US.
+    </div>
+  </div>
+
+  <!-- COSTS -->
+  <div class="island-section" id="costs">
+    <div class="island-header">
+      <h2>Cost Breakdown</h2>
+      <p>Estimates for 3 people, 7 nights. Mid-range is the main estimate; budget and luxury shown for comparison.</p>
+    </div>
+
+    <div class="cost-summary" style="margin-bottom: 16px;">
+      <div class="cost-header">💰 Mid-Range Estimate (3 People)</div>
+      <table class="cost-table">
+        <tr><td>✈️ Flights (BNA → HNL, roundtrip × 3)</td><td>~$1,800</td></tr>
+        <tr><td>✈️ Inter-island flights (Oahu → Big Island × 3)</td><td>~$450</td></tr>
+        <tr><td>🏨 Oahu hotel (4 nights × $350 avg)</td><td>~$1,400</td></tr>
+        <tr><td>🏨 Big Island hotel (3 nights × $280 avg)</td><td>~$840</td></tr>
+        <tr><td>🚗 Rental car (Big Island, 3 days)</td><td>~$250</td></tr>
+        <tr><td>🎟️ Pearl Harbor (3 people, full complex)</td><td>~$120</td></tr>
+        <tr><td>🎟️ Other attractions & tours</td><td>~$400</td></tr>
+        <tr><td>🍽️ Food (7 days × 3 people × $50/day)</td><td>~$1,050</td></tr>
+        <tr class="cost-total"><td><strong>Total Mid-Range Estimate</strong></td><td><strong>~$6,310</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="cost-summary" style="margin-bottom: 16px;">
+      <div class="cost-header" style="background: var(--palm);">📉 Budget Version (3 People)</div>
+      <table class="cost-table">
+        <tr><td>✈️ Flights (economy, flexible dates)</td><td>~$1,200</td></tr>
+        <tr><td>✈️ Inter-island flights</td><td>~$270</td></tr>
+        <tr><td>🏨 Hotels (budget tier, both islands)</td><td>~$1,260</td></tr>
+        <tr><td>🚗 Rental car + food trucks + free sites</td><td>~$700</td></tr>
+        <tr><td>🎟️ Attractions (stick to free/cheap ones)</td><td>~$250</td></tr>
+        <tr class="cost-total"><td><strong>Total Budget Estimate</strong></td><td><strong>~$3,680</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="cost-summary">
+      <div class="cost-header" style="background: #7b4f00;">✨ Luxury Version (3 People)</div>
+      <table class="cost-table">
+        <tr><td>✈️ Flights (business class or premium)</td><td>~$4,500</td></tr>
+        <tr><td>✈️ Inter-island (private charter or first class)</td><td>~$900</td></tr>
+        <tr><td>🏨 Halekulani + Mauna Kea Beach Hotel</td><td>~$7,000</td></tr>
+        <tr><td>🎟️ Private tours, helicopter volcano tour</td><td>~$1,500</td></tr>
+        <tr><td>🍽️ Fine dining + luau + activities</td><td>~$1,500</td></tr>
+        <tr class="cost-total"><td><strong>Total Luxury Estimate</strong></td><td><strong>~$15,400</strong></td></tr>
+      </table>
+    </div>
+
+    <div class="tip-box" style="margin: 16px 16px 0;">
+      <strong>Best time to go:</strong> Aim for <strong>late September or October</strong> — prices drop after Labor Day, weather is still great, smaller crowds. Book flights on a Friday and fly on a Tuesday to save money.
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">Built for your Hawaii family trip · WW2 · Volcanoes · Native Culture · 7 Days</div>
+
+<script>
+  function showIsland(id) {
+    document.querySelectorAll('.island-section').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.island-tab').forEach(t => t.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleDay(card) {
+    card.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
